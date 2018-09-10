@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            String jsonString = AssetJSONFile("tatkal.json", MainActivity.this);
+            String jsonString = AssetJSONFile("jsonfile.json", MainActivity.this);
             JSONObject jsonObject = new JSONObject(jsonString);
             String responseCode = jsonObject.getString("responseCode");
             if (responseCode.equals("200")) {
