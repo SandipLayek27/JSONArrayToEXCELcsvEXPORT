@@ -1,10 +1,9 @@
-package in.paythrough.jsontoexcel;
+package in.paythrough.jsonarraytoexcelcsv;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -25,46 +23,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import static in.paythrough.jsontoexcel.MainActivity.AssetJSONFile;
+public class JSONArrayToExcel {
 
-public class Demo extends AppCompatActivity {
+    public static boolean saveExcelFile(Context context, String fileName, JSONArray jsonArray, boolean showProgressDialog) {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo);
+        ProgressDialog dialog;
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Wait Until Download. Download Folder is your internal download folder");
+        dialog.setCancelable(false);
+        dialog.setTitle(fileName+".csv file Download");
 
-        try {
-            String jsonString = AssetJSONFile("tatkal.json", Demo.this);
-            JSONObject jsonObject = new JSONObject(jsonString);
-            String responseCode = jsonObject.getString("responseCode");
-            if (responseCode.equals("200")) {
-                JSONArray jsonArray = jsonObject.getJSONArray("withdrawReportData");
-                if(jsonArray.length()>0){
-                    if(saveExcelFile(Demo.this,"MyExcel",jsonArray)){
-                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(this, "NOT SUCCESS", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(this, "No Data Found", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }else{
-                Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static boolean saveExcelFile(Context context, String fileName,JSONArray jsonArray) {
+        if(showProgressDialog) dialog.show();
 
         if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+            if(showProgressDialog) dialog.dismiss();
             Toast.makeText(context, "EXTERNAL STORAGE PERMISSION ERROR", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (jsonArray.length()<=0) {
+            if(showProgressDialog) dialog.dismiss();
+            Toast.makeText(context, "Null Value", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -81,9 +59,6 @@ public class Demo extends AppCompatActivity {
         cs.setFillForegroundColor(HSSFColor.AQUA.index);
 
         cs.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
-        //cs.setFillPattern(HSSFCellStyle.ALIGN_CENTER);
-
 
         //New Sheet
         Sheet sheet1 = null;
@@ -132,6 +107,7 @@ public class Demo extends AppCompatActivity {
                 j++;
             }
         }catch (Exception e){
+            if(showProgressDialog) dialog.dismiss();
             e.printStackTrace();
         }
 
@@ -146,8 +122,10 @@ public class Demo extends AppCompatActivity {
             Log.w("FileUtils", "Writing file" + file);
             success = true;
         } catch (IOException e) {
+            if(showProgressDialog) dialog.dismiss();
             Log.w("FileUtils", "Error writing " + file, e);
         } catch (Exception e) {
+            if(showProgressDialog) dialog.dismiss();
             Log.w("FileUtils", "Failed to save file", e);
         } finally {
             try {
@@ -156,9 +134,11 @@ public class Demo extends AppCompatActivity {
             } catch (Exception ex) {
             }
         }
-
+        if(showProgressDialog) dialog.dismiss();
         return success;
     }
+
+
 
     public static boolean isExternalStorageReadOnly() {
         String extStorageState = Environment.getExternalStorageState();
