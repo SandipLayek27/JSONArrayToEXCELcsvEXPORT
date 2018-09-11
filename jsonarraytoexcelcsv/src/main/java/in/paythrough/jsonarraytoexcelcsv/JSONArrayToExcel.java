@@ -96,7 +96,8 @@ public class JSONArrayToExcel {
                 while (iterData.hasNext()) {
                     String key = iterData.next();
 
-                    String dataValue = jsonObjectDataPart.getString(key);
+                    //String dataValue = jsonObjectDataPart.getString(key);
+                    String dataValue = checkKeyAndGetValue(jsonObjectDataPart,key);
 
                     c = rowData.createCell(m);
                     c.setCellValue(dataValue);
@@ -164,5 +165,15 @@ public class JSONArrayToExcel {
         file.close();
 
         return new String(formArray);
+    }
+
+    public static String checkKeyAndGetValue(JSONObject jsonObject, String key){
+        String value ="";
+        try{
+            value = jsonObject.has(key)?jsonObject.getString(key):"";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return value;
     }
 }
