@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-public class JSONArrayToExcel {
+public class JSONArrayToExcelCsv {
 
     public static boolean saveExcelFile(Context context, String fileName, JSONArray jsonArray, boolean showProgressDialog) {
 
@@ -114,8 +114,7 @@ public class JSONArrayToExcel {
 
         // Create a path where we will place our List of objects on external storage
         //File file = new File(context.getExternalFilesDir(null), fileName);
-        //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".csv");
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".xls");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".csv");
         FileOutputStream os = null;
 
         try {

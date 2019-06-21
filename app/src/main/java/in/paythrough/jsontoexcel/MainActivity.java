@@ -8,8 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 
-import static in.paythrough.jsonarraytoexcelcsv.JSONArrayToExcel.AssetJSONFile;
-import static in.paythrough.jsonarraytoexcelcsv.JSONArrayToExcel.saveExcelFile;
+import in.paythrough.jsonarraytoexcelcsv.JSONArrayToExcelCsv;
+import in.paythrough.jsonarraytoexcelcsv.JSONArrayToExcelXls;
+
+//import static in.paythrough.jsonarraytoexcelcsv.JSONArrayToExcelCsv.AssetJSONFile;
+//import static in.paythrough.jsonarraytoexcelcsv.JSONArrayToExcelCsv.saveExcelFile;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,14 +22,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        try {
-            String jsonString = AssetJSONFile("jsonfile.json", MainActivity.this);
+        /*try {
+            String jsonString = JSONArrayToExcelCsv.AssetJSONFile("jsonfile.json", MainActivity.this);
             JSONObject jsonObject = new JSONObject(jsonString);
             String responseCode = jsonObject.getString("responseCode");
             if (responseCode.equals("200")) {
                 JSONArray jsonArray = jsonObject.getJSONArray("withdrawReport");
                 if(jsonArray.length()>0){
-                    if(saveExcelFile(MainActivity.this,"MyExcel",jsonArray,true)){
+                    if(JSONArrayToExcelCsv.saveExcelFile(MainActivity.this,"MyExcel",jsonArray,true)){
+                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(this, "NOT SUCCESS", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(this, "No Data Found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }else{
+                Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
+        try {
+            String jsonString = JSONArrayToExcelXls.AssetJSONFile("jsonfile.json", MainActivity.this);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            String responseCode = jsonObject.getString("responseCode");
+            if (responseCode.equals("200")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("withdrawReport");
+                if(jsonArray.length()>0){
+                    if(JSONArrayToExcelXls.saveExcelFile(MainActivity.this,"MyExcel",jsonArray,true)){
                         Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(this, "NOT SUCCESS", Toast.LENGTH_SHORT).show();
