@@ -115,7 +115,7 @@ public class JSONArrayToExcel {
         // Create a path where we will place our List of objects on external storage
         //File file = new File(context.getExternalFilesDir(null), fileName);
         //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".csv");
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".xlsx");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".xls");
         FileOutputStream os = null;
 
         try {
